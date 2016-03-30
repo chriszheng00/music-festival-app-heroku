@@ -44,7 +44,7 @@ gem 'geocoder'
 gem 'seed_dump'
 
 # Greyhound Scraper
-gem  'watir-webdriver'
+gem 'watir-webdriver'
 gem 'watir-scroll'
 gem 'phantomjs'
 gem 'rails-jquery-autocomplete'
@@ -73,5 +73,7 @@ group :development do
   gem 'spring'
 end
 
+gem 'puma'  #todo - put into :production
+gem 'rails_12factor'
 group :production do
 end
