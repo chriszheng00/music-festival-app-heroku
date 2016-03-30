@@ -1,0 +1,27 @@
+h1 #{@festival.name}
+
+/ cool to change name of class but plz let Carmen know so she can change the JS! :)
+div.festival-details
+  p Where: #{@festival.location}
+  p When: #{@festival.date}
+  p Price: #{ display(@festival.price) }
+  p Genres: #{ display( get_genres(@festival) )}
+  p Camping: #{ display(@festival.camping) }
+  = display(@festival.website) == 'n/a' ? '' : (link_to @festival.website, @festival.website)
+  p #{@festival.description}
+
+div
+  h2 Artists
+  ul
+    - @festival.artists.each do |artist|
+      li #{artist.name}
+
+div.driving-cost
+  h2 cost of driving [round trip] in CDN
+  p
+    | assumes you start with an empty tank of gas & that you gas up near your starting point
+    br does not currently account for switching mode of transportation e.g. ferries
+  p $#{display(@price_by_car)}
+  p trip duration: approx #{@time_by_car} [one way, driving non-stop]
+
+div class="flickr-imgs" data-name="#{@festival.name}"

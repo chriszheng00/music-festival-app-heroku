@@ -1,0 +1,12 @@
+h1 = @festival.name
+
+= form_tag "/festivals/search_flights", remote: true do
+
+  = hidden_field_tag :festival_id, @festival.id
+  = select_tag :cabin_class, options_for_select(@cabin_classes)
+  = select_tag :adults, options_for_select(@passenger_numbers)
+  = select_tag :children, options_for_select(@passenger_numbers)
+  = select_tag :infants, options_for_select(@passenger_numbers)
+  = submit_tag "Submit"
+
+.result

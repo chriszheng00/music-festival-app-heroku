@@ -1,0 +1,33 @@
+<h1 class="title">Testing!</h1>
+<h1><%= @festival.name %></h1>
+
+<div id="flight_search_form">
+<%= form_tag({controller: "festivals", action: "search_flights"}, remote: true) do %>
+
+
+<%= hidden_field_tag(:festival_id, @festival.id) %>
+
+<%= text_field_tag(:departure_airport, 'yvr' , class: 'autocomplete') %>
+
+<%= select_tag(:cabin_class, options_for_select(@cabin_classes)) %>
+
+<%= select_tag(:adults, options_for_select(@passenger_numbers)) %>
+<%= select_tag(:children, options_for_select(@passenger_numbers)) %>
+<%= select_tag(:infants, options_for_select(@passenger_numbers)) %>
+<%= submit_tag("Submit") %>
+<% end %>
+</div>
+
+<div id="default_flight_search">
+<%= form_tag({controller: "festivals", action: "search_flights"}, remote: true) do %>
+<%= hidden_field_tag(:festival_id, @festival.id) %>
+<%= hidden_field_tag(:cabin_class, "Economy") %>
+<%= hidden_field_tag(:adults, 1) %>
+<%= hidden_field_tag(:children, 0) %>
+<%= hidden_field_tag(:infants, 0) %>
+<%= submit_tag("Get Flights") %>
+<% end %>
+</div>
+
+
+<div class="result"></div>

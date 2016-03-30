@@ -1,0 +1,85 @@
+.container
+  
+  #festival-show
+
+    .header
+      h1 Music Festivals
+
+      div.cache-btns
+        - if $redis.hget('festivals', @festival.id)
+          = render 'unfavorite'
+        - else
+          = render 'favorite'
+    .music-festival data-id="#{@festival.id}"
+      div
+        h1 #{@festival.name}
+
+      #tabs
+        ul#tabs-nav
+          li 
+            a[href="#overview" id="overview-tab"] Overview
+          li
+            a[href="#travel" id="travel-tab"] Travel
+
+      .tabs-content
+        div[id="overview" class="content pure-g"]
+          div[class="pure-u-2-5"]
+            h1 Overview
+            p Date: #{@festival.date}
+            p Location: #{@festival.location}
+            p Genres: #{ display( get_genres(@festival) )}
+            p Tickets: #{ display(@festival.price) }
+            p Camping: #{ display(@festival.camping) }
+            = display(@festival.website) == 'n/a' ? '' : (link_to "Website", @festival.website)
+
+          div[class="pure-u-3-5" id="festival-map"]
+      
+      .tabs-content
+        div[id="travel" class="content hidden"]
+          div[id="travel-tabs"]
+            ul
+              li
+                a[href="#car" id="car-tab" data-div="#car"]
+                  i[class="fa fa-car fa-2x"]
+                  br Car
+              li 
+                a[href="/search_greyhound?default=true&festival_id=#{@festival.id}" id="bus-tab" data-div="#bus" data-remote="true"]
+                  i[class="fa fa-bus fa-2x"]
+                  br Bus
+              li 
+                a[href="/search_flights?default=true&festival_id=#{@festival.id}" id="flight-tab" data-div="#flight" data-remote="true"]                 
+                  i[class="fa fa-plane fa-2x"]
+                  br Plane
+
+            div[id="car" class="route-details active"]
+
+              div.driving-cost data-car-price="#{@price_by_car}" data-car-time="#{@time_by_car}"
+                h2 cost of driving [round trip] in CDN
+                p
+                  | assumes you start with an empty tank of gas and that you gas up near your starting point
+                  br does not currently account for switching mode of transportation e.g. ferries
+                p $#{display(@price_by_car)}
+                p trip duration: #{@time_by_car}
+
+              div[id="driving-map" data-latitude="#{@festival.latitude}" data-longitude="#{@festival.longitude}"]
+
+            div[id="bus" class="route-details hidden"]
+              img[src="#{image_path('bus_loading.gif')}" width="460px" height="460px"]
+
+            div[id="flight" class="route-details hidden"]
+              img[style="margin-left:auto; margin-right:auto;" src="#{image_path('plane_loading.gif')}" width="460px" height="460px"]
+    div 
+      - if @festival.description
+        h2 Description
+        p #{@festival.description}
+
+    div 
+
+      h2 Artists
+      ul
+      - @festival.artists.each do |artist|
+        li #{artist.name}
+
+    div[class="flickr-imgs" data-name="#{@festival.name}"]
+
+    script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1CqC9GEW-FdV8IsnwZaXTX6reVN7wYOo"

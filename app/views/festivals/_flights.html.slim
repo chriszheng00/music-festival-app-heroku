@@ -1,0 +1,61 @@
+- if @valid_search && @first_five_results
+  div[id="flight-search-details"]
+    p Flight from #{@first_five_results[0][:departure_airport]["Name"]} (#{@first_five_results[0][:departure_airport]["Code"]}) to #{@first_five_results[0][:arrival_airport]["Name"]} (#{@first_five_results[0][:arrival_airport]["Code"]})
+    p #{@first_five_results[5]["OutboundDate"]} to #{@first_five_results[5]["InboundDate"]} | #{@first_five_results[5]["CabinClass"]}
+
+    button[id="flight-search-btn"] Change Your Search Settings
+
+    #flight-search-form
+      = form_tag "/search_flights", method: "get", remote: true do
+
+        = hidden_field_tag :festival_id, @festival.id
+        = autocomplete_field_tag :departure_airport, @first_five_results[0][:departure_airport]["Name"], autocomplete_airport_name_festivals_path, :id_element => '#departure_airport_id'
+        = hidden_field_tag :departure_airport_id
+        = autocomplete_field_tag :arrival_airport, @first_five_results[0][:arrival_airport]["Name"], autocomplete_airport_name_festivals_path, :id_element => '#arrival_airport_id'
+        = hidden_field_tag :arrival_airport_id
+        = select_tag :cabin_class, options_for_select(@cabin_classes)
+        = select_tag :adults, options_for_select(@passenger_numbers)
+        = select_tag :children, options_for_select(@passenger_numbers)
+        = select_tag :infants, options_for_select(@passenger_numbers)
+        = submit_tag "Submit"
+
+    - @first_five_results[0..4].each do |result|
+      div[class="flight-result pure-g"]
+        div[class="pure-u-4-5"]
+          div[class="flight departure pure-g"]
+            div[class="pure-u-1-4"]
+              p #{@first_five_results[5]["OutboundDate"]}
+
+            div[class="pure-u-1-2"]
+              p #{result[:outbound_departure_time]} - #{result[:outbound_arrival_time]}
+              p #{result[:departure_carrier]["Name"]}
+
+            div[class="pure-u-1-4"]
+              p #{result[:outbound_leg]["Duration"]} min
+              p 0 stops
+
+          div[class="flight-arrival pure-g"]
+            div[class="pure-u-1-4"]
+              p #{@first_five_results[5]["InboundDate"]}
+
+              
+            div[class="pure-u-1-2"]
+              p #{result[:inbound_departure_time]} - #{result[:inbound_arrival_time]}
+              p Returning Carrier
+
+            div[class="pure-u-1-4"]
+              p #{result[:inbound_leg]["Duration"]} min
+              p 0 stops
+
+        div[class="pure-u-1-5"]
+          h3 $#{result["PricingOptions"][0]["Price"]}
+          a[href='#{result["PricingOptions"][0]["DeeplinkUrl"]}' class="pure-button pure-button-primary" target="_blank"] Book Now
+
+- elsif !@valid_search
+  div
+    p Your departure and arrival airports are the same! Check out the driving or bus directions!
+
+- elsif !@in_future
+  
+  div
+    p This event has happened.

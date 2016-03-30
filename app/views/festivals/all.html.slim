@@ -1,0 +1,70 @@
+h1 id="wel" class="head" MusicXplore
+
+div id="location"
+  = text_field_tag :location, '', id: 'get_location'
+  = button_tag 'Enter your location', id: 'edit_location'
+  div#usr_location
+    = @usr_location
+
+= form_tag '/festival-list', remote: true,  method: :get, id: 'festival-search'
+  div id="date"
+    = label_tag :date, 'Select a date'
+    = text_field_tag :date, '', id: 'date-picker'
+
+  div id="camping"
+    = label_tag :camping, 'Camping style festivals?'
+    p
+      | no preference
+      = radio_button_tag :camping, '', true
+      | yes
+      = radio_button_tag :camping, 'yes'
+      | no
+      = radio_button_tag :camping, 'no'
+
+  div id="artist"
+    = label_tag :artist, 'Search by artist'
+    = text_field_tag :artist, '', id: 'search-artist', autocomplete: :off
+
+  div id="genre"
+    = label_tag :genre, 'Search by genre'
+    = select_tag :genre,
+        options_from_collection_for_select(@genres, 'name', 'name'),
+        include_blank: ''
+
+  div id="search"
+    = submit_tag 'Search!', id: 'submit-search'
+
+div id="search-results"
+
+div id="upcoming-festivals"
+  h2 20 Upcoming Festivals
+  - @upcoming.each do |festival|
+    div
+      = link_to festival.name, festival_path(festival.id)
+      br Date: #{festival.date}
+      br Location: #{festival.location}
+      br Camping: #{display(festival.camping)}
+      br Price: #{display(festival.price)}
+      br Genres: #{display( get_genres(festival) )}
+      - if festival.description
+        br Description: #{festival.description}
+
+div.pure-g
+  div class="pure-u-1-3"
+    div class="card"
+      h3 class="card_header" 
+      p id="card_description" 
+  div class="pure-u-1-3"
+    div class="card"
+      h3 class="card_header"
+      p id="card_description"
+  div class="pure-u-1-3"
+    div class="card"
+      h3 class="card_header"
+      p id="card_description"
+  div class="pure-u-5-5"
+    div id="map"
+      button class="pan_button pure button" Pan
+      button class="map_button pure button" Toggle Map
+
+script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApKknQ2HJDwP0l2NNQcdE6pPfpFKNtwto&callback=initMap"

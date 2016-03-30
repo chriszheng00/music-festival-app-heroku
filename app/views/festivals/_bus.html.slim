@@ -1,0 +1,39 @@
+
+h2 Bus Schedules
+- if @greyhound_data.is_a? String || @greyhound_data.nil?
+  .error
+    h3 #{@greyhound_data}
+
+- elsif @greyhound_data.is_a? Hash
+
+    div[id="bus-depart"]
+      h3 Leaving #{@depart_from[:city]} #{@depart_from[:state]} on #{@depart_date}
+      table
+        tr
+          th Schedule
+          th Leave #{@depart_from[:city]} #{@depart_from[:state]}
+          th Arrive #{@return_from[:city]} #{@return_from[:state]}
+          th Travel Time
+          th Round Trip Cost
+        - @greyhound_data[:depart].each do |key, schedule|
+          tr
+            td #{key + 1}
+            td #{schedule[:start_time]}
+            td #{schedule[:end_time]}
+            td #{schedule[:travel_time]}
+            td $#{schedule[:cost]}
+
+    div[id="bus-return"]
+      h3 Returning from #{@return_from[:city]} #{@return_from[:state]} on #{@return_date}
+      table
+        tr
+          th Schedule
+          th Leave #{@return_from[:city]} #{@return_from[:state]}
+          th Arrive #{@depart_from[:city]} #{@depart_from[:state]}
+          th Travel Time
+        - @greyhound_data[:return].each do |key, schedule|
+          tr
+            td #{key + 1}
+            td #{schedule[:start_time]}
+            td #{schedule[:end_time]}
+            td #{schedule[:travel_time]}

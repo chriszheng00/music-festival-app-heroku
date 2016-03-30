@@ -1,0 +1,56 @@
+div[class="modal fade" id="gridModal" tabindex="-1" role="dialog" aria-labelledby="gridModalLabel" aria-hidden="true"]
+  div[class="modal-dialog modal" role="document"]
+    div[class="modal-content"]
+      div[class="modal-header"]
+        button[class="close-btn" data-dismiss="modal" aria-label="Close"]
+          i class="fa fa-times"  
+          | close
+        h1 Favourited Festivals
+
+      div[class="modal-body"]
+        table
+          thead
+            tr
+              th Festival
+              th Date
+              th Location
+              th Price
+              th Camping
+              th Driving time
+              th Driving cost
+              th Bus time
+              th Bus cost
+              th Flight time
+              th Flight cost
+              th
+          tbody
+          - @selected_festivals.each do |festival|
+            tr[class="fave-festival" data-id="#{festival['id']}"]
+              td #{link_to festival['name'], festival_path(festival['id'].to_i)}
+              td #{festival['date']}
+              td #{festival['location']}
+              td #{display(festival['price'])}
+              td #{display(festival['camping'])}
+
+              - if festival['price_car'] == 0
+                td #{festival['time_car']}
+                td $#{display(festival['price_car'])}
+              - else
+                td[colspan=2] n/a
+              
+              - if festival['price_bus']
+                td #{festival['time_bus']}
+                td $#{festival['price_bus']}
+              - else
+                td[colspan=2] n/a
+
+              - if festival['price_flight']
+                td #{display(festival['time_flight_in'])} -
+                    #{display(festival['time_flight_out'])} mins
+                td $#{display(festival['price_flight'])}
+              - else
+                td[colspan=2] n/a
+              td
+                button.remove-fave
+                  i[class="fa fa-star"] 
+                  | Remove

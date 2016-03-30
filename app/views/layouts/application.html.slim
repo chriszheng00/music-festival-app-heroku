@@ -1,0 +1,21 @@
+doctype html
+html
+ head
+   title Music Festival
+   meta name="viewport" content="width=device-width, initial-scale=1.0"
+   meta charset= "utf-8"
+   link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css"
+   link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+
+   = stylesheet_link_tag  "application", media: 'all'
+   = javascript_include_tag "application"
+   = csrf_meta_tags
+ body
+
+  = link_to '#', "data-toggle" => "modal", "data-target" => "#gridModal" do
+    i[class="fa fa-th-large"] 
+    | festival comparison
+  
+  = render 'festival_compare'
+
+  = yield
