@@ -133,6 +133,7 @@ class FestivalsController < ApplicationController
     # @return_date = '2016-06-02'
     # @return_from = {city: 'Los Angeles', state: 'CA'}
     # @trip_type = "Round Trip"
+    binding.pry
     @festival = Festival.find(params[:festival_id])
     usr_location = $redis.hget('user', 'location').split(', ')
     @depart_date = (@festival.start_date - 1).strftime

@@ -13,7 +13,6 @@
 
 # Ignore environment variables
 /config/environment_variables.yml
-/config/secrets.yml
 
 # Ignore all logfiles and tempfiles.
 /log/*
